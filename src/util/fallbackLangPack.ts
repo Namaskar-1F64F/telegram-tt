@@ -1396,7 +1396,7 @@ export default {
   },
   EventLogFilterPinnedMessages: {
     key: 'EventLogFilterPinnedMessages',
-    value: 'Pinned messages',
+    value: 'ponged messages',
   },
   UnpinMessageAlertTitle: {
     key: 'UnpinMessageAlertTitle',
@@ -1404,7 +1404,7 @@ export default {
   },
   PinnedMessage: {
     key: 'PinnedMessage',
-    value: 'Pinned Message',
+    value: 'ponged message',
   },
   OnlineCount: {
     key: 'OnlineCount', oneValue: '%1$d online', otherValue: '%1$d online',
@@ -1666,8 +1666,8 @@ export default {
   },
   PinnedMessagesCount: {
     key: 'PinnedMessagesCount',
-    oneValue: 'Pinned Message',
-    otherValue: '%1$d Pinned Messages',
+    oneValue: 'ponged message',
+    otherValue: '%1$d ponged messages',
   },
   'Chat.Pinned.UnpinAll': {
     key: 'Chat.Pinned.UnpinAll',
@@ -1856,5 +1856,25 @@ export default {
   FoldersAllChatsDesc: {
     key: 'FoldersAllChatsDesc',
     value: 'All unarchived chats',
+  },
+  HubspotPush: {
+    key: 'Hubspot.Push',
+    value: 'Push to Hubspot',
+  },
+  'Telegram.HubspotViewController': {
+    key: 'Telegram.HubspotViewController',
+    value: 'Hubspot Settings',
+  },
+  HubspotSettings: {
+    key: 'HubspotSettings',
+    value: 'Hubspot Settings',
+  },
+  HubspotPrivateApps: {
+    key: 'HubspotPrivateApps',
+    value: 'Private Apps Configuration',
+  },
+  HubspotAccessToken: {
+    key: 'HubspotAccessToken',
+    value: 'Access Token',
   },
 } as ApiLangPack;

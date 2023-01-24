@@ -30,6 +30,7 @@ import SettingsPasscode from './passcode/SettingsPasscode';
 import SettingsStickers from './SettingsStickers';
 import SettingsCustomEmoji from './SettingsCustomEmoji';
 import SettingsExperimental from './SettingsExperimental';
+import SettingsHubspot from './SettingsHubspot';
 
 import './Settings.scss';
 
@@ -412,6 +413,13 @@ const Settings: FC<OwnProps> = ({
             shownScreen={screen}
             isActive={isScreenActive}
             onScreenSelect={onScreenSelect}
+            onReset={handleReset}
+          />
+        );
+      case SettingsScreens.Hubspot:
+        return (
+          <SettingsHubspot
+            isActive={isScreenActive}
             onReset={handleReset}
           />
         );

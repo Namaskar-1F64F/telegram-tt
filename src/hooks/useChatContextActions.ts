@@ -18,6 +18,7 @@ const useChatContextActions = ({
   isMuted,
   canChangeFolder,
   handleDelete,
+  handlePushToHubspot,
   handleChatFolderChange,
   handleReport,
 }: {
@@ -28,6 +29,7 @@ const useChatContextActions = ({
   isMuted?: boolean;
   canChangeFolder?: boolean;
   handleDelete: () => void;
+  handlePushToHubspot: () => void;
   handleChatFolderChange: () => void;
   handleReport?: () => void;
 }, isInSearch = false) => {
@@ -101,10 +103,16 @@ const useChatContextActions = ({
       destructive: true,
       handler: handleDelete,
     };
+    const actionPushContactToHubspot = {
+      title: lang('HubspotPush'),
+      icon: 'open-in-new-tab',
+      handler: handlePushToHubspot,
+    };
 
     const isInFolder = folderId !== undefined;
 
     return compact([
+      actionPushContactToHubspot,
       actionAddToFolder,
       actionUnreadMark,
       actionPin,
@@ -115,7 +123,7 @@ const useChatContextActions = ({
     ]);
   }, [
     chat, user, canChangeFolder, lang, handleChatFolderChange, isPinned, isInSearch, isMuted,
-    handleDelete, handleReport, folderId, isSelf, isServiceNotifications,
+    handleDelete, handleReport, handlePushToHubspot, folderId, isSelf, isServiceNotifications,
   ]);
 };
 

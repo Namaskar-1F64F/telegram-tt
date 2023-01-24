@@ -89,6 +89,7 @@ type StateProps = {
   lastSyncTime?: number;
   lastMessageTopic?: ApiTopic;
   typingStatus?: ApiTypingStatus;
+  hubspotAccessToken?: string;
 };
 
 const Chat: FC<OwnProps & StateProps> = ({
@@ -120,6 +121,7 @@ const Chat: FC<OwnProps & StateProps> = ({
   lastMessageTopic,
   typingStatus,
   onDragEnter,
+  hubspotAccessToken,
 }) => {
   const {
     openChat,
@@ -187,10 +189,34 @@ const Chat: FC<OwnProps & StateProps> = ({
     openReportModal();
   }, [markRenderReportModal, openReportModal]);
 
+  const handlePushToHubspot = useCallback(() => {
+    if (!isUserId(chatId)) { return; }
+    const properties = {
+      company: chat?.title,
+      email: `tg@${user?.usernames?.[0].username}.com`,
+      firstname: user?.firstName,
+      lastname: user?.lastName,
+      phone: '(877) 929-0687',
+      website: 'biglytics.net',
+    };
+    const asyncThing = async () => {
+      await fetch('https://serverless-proxy-sveny.vercel.app/api/hubspot', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${hubspotAccessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(properties),
+      });
+    };
+    asyncThing();
+  }, [hubspotAccessToken, chatId, user, chat]);
+
   const contextActions = useChatContextActions({
     chat,
     user,
     handleDelete,
+    handlePushToHubspot,
     handleChatFolderChange,
     handleReport,
     folderId,
@@ -354,6 +380,7 @@ export default memo(withGlobal<OwnProps>(
       lastMessageTopic,
       typingStatus,
       isEmojiStatusColored: statusEmoji?.shouldUseTextColor,
+      hubspotAccessToken: global.settings.byKey.hubspotAccessToken,
     };
   },
 )(Chat));

@@ -513,7 +513,7 @@ addActionHandler('checkAppVersion', () => {
       if (APP_VERSION_REGEX.test(version) && version !== APP_VERSION) {
         setGlobal({
           ...getGlobal(),
-          isUpdateAvailable: true,
+          isUpdateAvailable: false,
         });
       }
     })

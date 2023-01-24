@@ -52,6 +52,9 @@ const LeftSearchResultChat: FC<OwnProps & StateProps> = ({
     isMuted,
     canChangeFolder,
     handleDelete: openDeleteModal,
+    handlePushToHubspot() {
+      return undefined;
+    },
     handleChatFolderChange: openChatFolderModal,
   }, true);
 

@@ -32,7 +32,6 @@ import useFlag from '../../../hooks/useFlag';
 import useContextMenuHandlers from '../../../hooks/useContextMenuHandlers';
 import { useStateRef } from '../../../hooks/useStateRef';
 import useCustomEmojiTooltip from './hooks/useCustomEmojiTooltip';
-import useAppLayout from '../../../hooks/useAppLayout';
 import useScrolledState from '../../../hooks/useScrolledState';
 
 import Button from '../../ui/Button';

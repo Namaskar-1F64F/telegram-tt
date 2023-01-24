@@ -86,6 +86,13 @@ const SettingsMain: FC<OwnProps & StateProps> = ({
           {lang('Telegram.GeneralSettingsViewController')}
         </ListItem>
         <ListItem
+          icon="open-in-new-tab"
+          // eslint-disable-next-line react/jsx-no-bind
+          onClick={() => onScreenSelect(SettingsScreens.Hubspot)}
+        >
+          {lang('Telegram.HubspotViewController')}
+        </ListItem>
+        <ListItem
           icon="unmute"
           // eslint-disable-next-line react/jsx-no-bind
           onClick={() => onScreenSelect(SettingsScreens.Notifications)}

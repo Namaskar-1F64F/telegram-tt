@@ -89,6 +89,7 @@ export interface ISettings extends NotifySettings, Record<string, any> {
   wasTimeFormatSetManually: boolean;
   isConnectionStatusMinimized: boolean;
   shouldArchiveAndMuteNewNonContact?: boolean;
+  hubspotAccessToken?: string;
 }
 
 export interface ApiPrivacySettings {
@@ -216,6 +217,7 @@ export enum SettingsScreens {
   Stickers,
   QuickReaction,
   CustomEmoji,
+  Hubspot,
 }
 
 export type StickerSetOrRecent = Pick<ApiStickerSet, (

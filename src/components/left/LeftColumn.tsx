@@ -151,6 +151,7 @@ const LeftColumn: FC<StateProps> = ({
         case SettingsScreens.EditProfile:
         case SettingsScreens.Folders:
         case SettingsScreens.General:
+        case SettingsScreens.Hubspot:
         case SettingsScreens.Notifications:
         case SettingsScreens.DataStorage:
         case SettingsScreens.Privacy:
