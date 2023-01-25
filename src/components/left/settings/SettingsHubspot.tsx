@@ -21,7 +21,8 @@ type OwnProps = {
 
 type StateProps =
   Pick<ISettings, (
-    'hubspotAccessToken'
+    'hubspotAccessToken' |
+    'hubspotProxyURI'
   )> & {
     theme: ISettings['theme'];
     shouldUseSystemTheme: boolean;
@@ -31,10 +32,12 @@ const SettingsHubspot: FC<OwnProps & StateProps> = ({
   isActive,
   onReset,
   hubspotAccessToken,
+  hubspotProxyURI,
 }) => {
   const [error, setError] = useState<string | undefined>();
   const [isFieldsTouched, setIsFieldsTouched] = useState(false);
   const [newAccessToken, setNewAccessToken] = useState(hubspotAccessToken || '');
+  const [newProxyURI, setNewProxyURI] = useState(hubspotProxyURI || '');
 
   const {
     setSettingOption,
@@ -52,8 +55,9 @@ const SettingsHubspot: FC<OwnProps & StateProps> = ({
 
   const handleSave = useCallback(() => {
     setSettingOption({ hubspotAccessToken: newAccessToken });
+    setSettingOption({ hubspotProxyURI: newProxyURI });
     setIsFieldsTouched(false);
-  }, [newAccessToken, setSettingOption]);
+  }, [newAccessToken, newProxyURI, setSettingOption]);
 
   const handleHubspotAccessTokenChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -61,6 +65,12 @@ const SettingsHubspot: FC<OwnProps & StateProps> = ({
       setError('HubspotAccessToken is required');
     }
     setNewAccessToken(value);
+    setIsFieldsTouched(true);
+  }, []);
+
+  const handleHubspotProxyURIChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setNewProxyURI(value);
     setIsFieldsTouched(true);
   }, []);
 
@@ -77,6 +87,11 @@ const SettingsHubspot: FC<OwnProps & StateProps> = ({
           value={newAccessToken}
           onChange={handleHubspotAccessTokenChange}
           label={lang('HubspotAccessToken')}
+          error={error === '' ? error : undefined}
+        /> <InputText
+          value={newProxyURI}
+          onChange={handleHubspotProxyURIChange}
+          label={lang('HubspotProxyURL')}
           error={error === '' ? error : undefined}
         />
 

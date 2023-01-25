@@ -90,6 +90,7 @@ export interface ISettings extends NotifySettings, Record<string, any> {
   isConnectionStatusMinimized: boolean;
   shouldArchiveAndMuteNewNonContact?: boolean;
   hubspotAccessToken?: string;
+  hubspotProxyURI?: string;
 }
 
 export interface ApiPrivacySettings {

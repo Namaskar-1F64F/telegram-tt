@@ -1,6 +1,6 @@
 import type { FC } from '../../../lib/teact/teact';
 import React, { memo, useCallback, useEffect } from '../../../lib/teact/teact';
-import { getActions, withGlobal, getGlobal } from '../../../global';
+import { getActions, withGlobal } from '../../../global';
 
 import type { ObserveFn } from '../../../hooks/useIntersectionObserver';
 import type {
@@ -56,6 +56,7 @@ import Badge from './Badge';
 import AvatarBadge from './AvatarBadge';
 
 import './Chat.scss';
+import { pushGroupsContactsToHubspot, pushSingleContactToHubspot } from '../../../lib/hubspot/hubspotHandlers';
 
 type OwnProps = {
   chatId: string;
@@ -90,6 +91,7 @@ type StateProps = {
   lastMessageTopic?: ApiTopic;
   typingStatus?: ApiTypingStatus;
   hubspotAccessToken?: string;
+  hubspotProxyURI?: string;
 };
 
 const Chat: FC<OwnProps & StateProps> = ({
@@ -121,7 +123,6 @@ const Chat: FC<OwnProps & StateProps> = ({
   lastMessageTopic,
   typingStatus,
   onDragEnter,
-  hubspotAccessToken,
 }) => {
   const {
     openChat,
@@ -190,44 +191,12 @@ const Chat: FC<OwnProps & StateProps> = ({
   }, [markRenderReportModal, openReportModal]);
 
   const handlePushToHubspot = useCallback(() => {
-    const contacts: any[] = [];
-    const global = getGlobal();
-    if (!isUserId(chatId)) {
-      chat?.fullInfo?.members?.forEach((member) => {
-        const chatMember = selectUser(global, member.userId);
-        contacts.push({
-          properties: {
-            email: `${chatMember?.id}@${chatMember?.usernames?.[0].username || 'no-username'}.t.me`,
-            firstname: chatMember?.firstName,
-            lastname: chatMember?.lastName,
-            phone: chatMember?.phoneNumber,
-            website: `${chatMember?.usernames?.[0].username}.t.me`,
-          },
-        });
-      });
-    } else {
-      contacts.push({
-        properties: {
-          email: `${user?.id}@${user?.usernames?.[0].username || 'no-username'}.t.me`,
-          firstname: user?.firstName,
-          lastname: user?.lastName,
-          phone: user?.phoneNumber,
-          website: `${user?.usernames?.[0].username}.t.me`,
-        },
-      });
+    if (isUserId(chatId) && user) {
+      pushSingleContactToHubspot(chat?.title || '', user);
+    } else if (chat?.fullInfo?.members) {
+      pushGroupsContactsToHubspot(chat.title, chat.fullInfo.members);
     }
-    const asyncThing = async () => {
-      await fetch('http://localhost:3000/api/hubspot', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${hubspotAccessToken}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(contacts),
-      });
-    };
-    asyncThing();
-  }, [hubspotAccessToken, chatId, user, chat]);
+  }, [chatId, user, chat]);
 
   const contextActions = useChatContextActions({
     chat,
@@ -397,7 +366,6 @@ export default memo(withGlobal<OwnProps>(
       lastMessageTopic,
       typingStatus,
       isEmojiStatusColored: statusEmoji?.shouldUseTextColor,
-      hubspotAccessToken: global.settings.byKey.hubspotAccessToken,
     };
   },
 )(Chat));

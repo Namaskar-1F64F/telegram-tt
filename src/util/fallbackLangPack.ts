@@ -1877,4 +1877,8 @@ export default {
     key: 'HubspotAccessToken',
     value: 'Access Token',
   },
+  HubspotProxyURL: {
+    key: 'HubspotProxyURI',
+    value: 'Proxy URI',
+  },
 } as ApiLangPack;
