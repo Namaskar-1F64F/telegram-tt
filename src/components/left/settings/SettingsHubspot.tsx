@@ -72,7 +72,7 @@ const SettingsHubspot: FC<OwnProps & StateProps> = ({
   return (
     <div className="settings-content custom-scroll">
       <div className="settings-item pt-3">
-        <h4 className="settings-item-header" dir={lang.isRtl ? 'rtl' : undefined}>{lang('HubspotSettings')}</h4>
+        <h4 className="settings-item-header" dir={lang.isRtl ? 'rtl' : undefined}>{lang('HubspotPrivateApps')}</h4>
         <InputText
           value={newAccessToken}
           onChange={handleHubspotAccessTokenChange}

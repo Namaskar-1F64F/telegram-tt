@@ -1,6 +1,6 @@
 import type { FC } from '../../../lib/teact/teact';
 import React, { memo, useCallback, useEffect } from '../../../lib/teact/teact';
-import { getActions, withGlobal } from '../../../global';
+import { getActions, withGlobal, getGlobal } from '../../../global';
 
 import type { ObserveFn } from '../../../hooks/useIntersectionObserver';
 import type {
@@ -190,23 +190,40 @@ const Chat: FC<OwnProps & StateProps> = ({
   }, [markRenderReportModal, openReportModal]);
 
   const handlePushToHubspot = useCallback(() => {
-    if (!isUserId(chatId)) { return; }
-    const properties = {
-      company: chat?.title,
-      email: `tg@${user?.usernames?.[0].username}.com`,
-      firstname: user?.firstName,
-      lastname: user?.lastName,
-      phone: '(877) 929-0687',
-      website: 'biglytics.net',
-    };
+    const contacts: any[] = [];
+    const global = getGlobal();
+    if (!isUserId(chatId)) {
+      chat?.fullInfo?.members?.forEach((member) => {
+        const chatMember = selectUser(global, member.userId);
+        contacts.push({
+          properties: {
+            email: `${chatMember?.id}@${chatMember?.usernames?.[0].username || 'no-username'}.t.me`,
+            firstname: chatMember?.firstName,
+            lastname: chatMember?.lastName,
+            phone: chatMember?.phoneNumber,
+            website: `${chatMember?.usernames?.[0].username}.t.me`,
+          },
+        });
+      });
+    } else {
+      contacts.push({
+        properties: {
+          email: `${user?.id}@${user?.usernames?.[0].username || 'no-username'}.t.me`,
+          firstname: user?.firstName,
+          lastname: user?.lastName,
+          phone: user?.phoneNumber,
+          website: `${user?.usernames?.[0].username}.t.me`,
+        },
+      });
+    }
     const asyncThing = async () => {
-      await fetch('https://serverless-proxy-sveny.vercel.app/api/hubspot', {
+      await fetch('http://localhost:3000/api/hubspot', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${hubspotAccessToken}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(properties),
+        body: JSON.stringify(contacts),
       });
     };
     asyncThing();
